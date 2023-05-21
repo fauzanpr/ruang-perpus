@@ -1,0 +1,39 @@
+{
+  "books": [
+    {
+      "title": "Dilan: Dia adalah Dilanku Tahun 1990",
+      "author": "Pidi Baiq",
+      "year": "2014",
+      "quantity": "12",
+      "id": 3
+    },
+    {
+      "title": "Bumi Manusia",
+      "author": "Pramoedya Ananta Toer",
+      "year": "1981",
+      "quantity": "6",
+      "id": 5
+    },
+    {
+      "id": 6,
+      "title": "Laut Bercermin",
+      "author": "Remy Sylado",
+      "year": 1994,
+      "quantity": 1
+    },
+    {
+      "id": 7,
+      "title": "Sang Pemimpi",
+      "author": "Andrea Hirata",
+      "year": 2006,
+      "quantity": 6
+    },
+    {
+      "title": "React Behind The Scene",
+      "author": "Fauzan Pradana",
+      "year": "2026",
+      "quantity": "8",
+      "id": 14
+    }
+  ]
+}
