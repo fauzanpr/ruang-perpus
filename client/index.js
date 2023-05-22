@@ -75,7 +75,7 @@ async function handleClickDeleteButton(bookId) {
 
     //panggil function deleteBook dengan parameter bookId
     // TODO: answer here
-    deleteBook(bookId);
+    await deleteBook(bookId);
     loadPage();
   } catch (error) {
     console.log(error);
@@ -100,23 +100,25 @@ async function handleEditForm(event) {
       }
     */
     // TODO: answer here
-    console.log(event);
     const book = {
-      title: event.target[0].value,
-      author: event.target[1].value,
-      year: event.target[2].value,
-      quantity: event.target[3].value,
+      title: document.getElementById('title').value,
+      author: document.getElementById('author').value,
+      year: document.getElementById('year').value,
+      quantity: document.getElementById('quantity').value
     };
-    console.log(book);
 
     // panggil function editBook dengan parameter book
     // TODO: answer here
-    editBook(book);
+    await editBook(book).then(() => {
+      currentBook = null;
+      currentPage = 'home';
+      loadPage();
+    });
 
-    currentBook = null;
+    // currentBook = null;
 
-    currentPage = "home";
-    loadPage();
+    // currentPage = "home";
+    // loadPage();
   } catch (error) {
     console.log(error);
     console.log("Terjadi kesalahan saat mengubah buku");
@@ -140,16 +142,21 @@ async function handleAddForm(event) {
       }
     */
     // TODO: answer here
+    // console.log(event.target.title.value);
+    // console.log(event.target.author.value);
+    // console.log(event.target.year.value);
+    // console.log(event.target.quantity.value);
+    const target = event.target;
     const book = {
-      title: event.target[0].value,
-      author: event.target[1].value,
-      year: event.target[2].value,
-      quantity: event.target[3].value,
+      title: document.getElementById('title').value,
+      author: document.getElementById('author').value,
+      year: document.getElementById('year').value,
+      quantity: document.getElementById('quantity').value,
     };
 
     // panggil function addBook dengan parameter book
     // TODO: answer here
-    addBook(book);
+    await addBook(book);
     // currentPage = "home";
     // loadPage();
   } catch (error) {
@@ -173,12 +180,25 @@ navLinks.forEach((navLink) => {
 });
 
 function generateRows(books) {
-  let rows = "";
+  let rows = document.createElement('tr');
+  rows.classList.add('book-item');
   if (books.length === 0) {
     rows = `<tr>
    <td colspan="6" class="px-6 py-4 border-b text-center">Tidak ada buku yang ditemukan</td>
 </tr>`;
   } else {
+    // books.forEach(item => {
+    //   rows.append(`<td class="px-6 py-4 border-b">${item.title}</td>
+    //   <td class="px-6 py-4 border-b">${item.author}</td>
+    //   <td class="px-6 py-4 border-b">${item.year}</td>
+    //   <td class="px-6 py-4 border-b">${item.quantity}</td>
+    //   <td class="px-6 py-4 border-b text-center">
+    //     <button class="inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onclick="handleClickEditButton(${item.id})">Edit</button>
+    //     <button class="inline-block bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" onclick="handleClickDeleteButton(${item.id})">Hapus</button>  
+    //   </td>`);
+    // });
+    // console.log(rows);
+
     rows = books.map((item) => {
       return `<tr class="book-item">
       <td class="px-6 py-4 border-b">${item.title}</td>
@@ -272,12 +292,12 @@ async function loadPage() {
 
 async function fetchBooks() {
   try {
-    books = await fetch(BASE_URL).then((res) => res.json());
     /* 
       fetch data buku dari http://localhost:3333/books
       simpan hasilnya ke variabel global books
     */
     // TODO: answer here
+    books = await fetch(BASE_URL).then((res) => res.json());
   } catch (error) {
     console.log(error);
     console.log("Terjadi kesalahan saat mengambil data buku");
@@ -296,7 +316,7 @@ async function addBook(book) {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(book),
+      body: JSON.stringify(book)
     }).then(() => {
       currentPage = "home";
       loadPage();
@@ -305,7 +325,7 @@ async function addBook(book) {
     console.log(error);
     console.log("Terjadi kesalahan saat menambah buku");
   }
-}
+};
 
 async function editBook(book) {
   try {
@@ -319,14 +339,14 @@ async function editBook(book) {
       headers: {
         "Content-type": "application/json",
       },
-      body: JSON.stringify(book),
+      body: JSON.stringify(book)
     });
-    loadPage();
+    await loadPage();
   } catch (error) {
     console.log(error);
     console.log("Terjadi kesalahan saat mengubah buku");
   }
-}
+};
 
 async function deleteBook(bookId) {
   try {
@@ -336,9 +356,8 @@ async function deleteBook(bookId) {
     */
     // TODO: answer here
     await fetch(`http://localhost:3333/books/${bookId}`, {
-      method: "DELETE",
+      method: "DELETE"
     });
-    loadPage();
   } catch (error) {
     console.log(error);
     console.log("Terjadi kesalahan saat menghapus buku");
